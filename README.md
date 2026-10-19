@@ -82,13 +82,6 @@ Proyek ini mencakup siklus pemrosesan machine learning end-to-end yang diimpleme
        - False Negative (FN): 1 sampel.
        - Total prediksi benar mencapai 199 dari 201 data uji (hanya 2 kesalahan prediksi).
 
-7. **Model Serialization (Ekspor Joblib)**
-   - Menyimpan seluruh artefak model dan transformer ke format `.joblib` untuk kebutuhan inferensi dan deployment:
-     - [`linear_regression_model.joblib`](file:///c:/Users/SANRIO/Documents/Machine%20Learning/KAMPUS/datasetgua/linear_regression_model.joblib)
-     - [`logistic_regression_model.joblib`](file:///c:/Users/SANRIO/Documents/Machine%20Learning/KAMPUS/datasetgua/logistic_regression_model.joblib)
-     - [`scaler.joblib`](file:///c:/Users/SANRIO/Documents/Machine%20Learning/KAMPUS/datasetgua/scaler.joblib)
-   - Uji verifikasi inferensi dengan memuat kembali model menggunakan `joblib.load` pada sampel data uji telah berhasil dilakukan.
-
 ---
 
 ## Deskripsi Kolom Dataset (`pokemon.csv`)
