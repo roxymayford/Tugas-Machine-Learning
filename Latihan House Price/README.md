@@ -89,6 +89,34 @@ Menguji 7 algoritma dengan paradigma berbeda:
 6. **Gradient Boosting Regressor:** Ensemble sekuensial Boosting.
 7. **Support Vector Regression (SVR - RBF Kernel):** Model regresi berbasis hyperplane dan margin.
 
+### 9.1 Landasan Teori & Rasional Pemilihan Linear Regression
+
+Meskipun model ensemble non-linier (*Gradient Boosting* dan *Random Forest*) memberikan performa prediktif tertinggi, **Linear Regression (Ordinary Least Squares - OLS)** dipilih sebagai salah satu algoritma inti dalam pipeline penelitian ini dengan pertimbangan teoretis dan metodologis berikut:
+
+1. **Target Prediksi Numerik Kontinu (`SalePrice`):**  
+   Variabel target yang diestimasi adalah nilai harga jual rumah (`SalePrice`) yang merupakan variabel kontinu berskala rasio. **Fatah & Muhtajin (2026, hlm. 344)** menyatakan bahwa algoritma regresi linier merupakan metode statistik fundamental dan efektif untuk *"memprediksi nilai numerik kontinu"* berdasarkan relasi multivariat antarfitur penjelas.
+2. **Interpretabilitas Tinggi & Kemudahan Komputasi:**  
+   **Rico-Juan & Taltavull de la Paz (2021, p. 6)** menguraikan bahwa model regresi linear klasik *"easy to calculate and interpret but assume in their models only linear relationships"*. Sifat transparansi (*white-box*) ini memungkinkan koefisien bobot parameter ($\beta$) dari tiap fitur diinterpretasikan secara langsung, sehingga analis dapat memahami kontribusi marjinal karakteristik fisik rumah (seperti `OverallQual` dan `GrLivArea`) terhadap harga pasar properti secara transparan dan logis.
+3. **Performa sebagai Baseline Empiris yang Solid & Stabil:**  
+   Dalam literatur penetapan harga properti hedonik (*hedonic housing prices*), model OLS konvensional terbukti mampu menjelaskan **80,8%** variasi variabel target (**Rico-Juan & Taltavull de la Paz, 2021, p. 7**) dengan capaian rata-rata $R^2$ sebesar **0,823** pada pengujian *10-fold cross-validation* (**Rico-Juan & Taltavull de la Paz, 2021, p. 13**). Sejalan dengan literatur internasional tersebut, studi empiris **Fatah & Muhtajin (2026, hlm. 343)** juga mencatatkan $R^2 \approx 0,91$ (0,91 pada abstrak / 0,916 pada teks isi pembahasan), MAE 81.250, dan RMSE 100.500 dalam memprediksi harga rumah. Capaian ini membuktikan adanya korelasi linier yang kuat antara atribut properti dan harga pasar, serta menegaskan posisi regresi linear sebagai **baseline empiris yang stabil dan interpretabel**, bukan sebagai model paling akurat dibanding ensemble.
+4. **Sensitivitas terhadap Outlier & Justifikasi Preprocessing:**  
+   **Fatah & Muhtajin (2026, hlm. 347–348)** mencatat bahwa regresi linier sangat sensitif terhadap kehadiran data pencilan (*outliers*). Fakta teoretis ini memberikan justifikasi ilmiah yang kuat atas keharusan dilakukannya tahap pembersihan *outlier* berbasis **Metode Interquartile Range (IQR)** serta **standardisasi fitur (Z-Score)** pada tahap preprocessing sebelumnya di proyek ini guna mencegah bias estimasi.
+
+#### Tabel Ringkasan Lokasi Kutipan (In-Text Citation) & Status Verifikasi Dokumen Sumber
+
+| No | Sitasi Sumber | Lokasi Kutipan | Kutipan / Pernyataan Kunci | Catatan Status Verifikasi Dokumen Sumber |
+|:---:|:---|:---|:---|:---|
+| 1 | **Fatah & Muhtajin (2026)** | Hlm. 344 | Regresi linier efektif untuk "memprediksi nilai numerik kontinu" | Terverifikasi langsung dari naskah publikasi *JAMASTIKA*, Vol. 5, No. 1, hlm. 344. |
+| 2 | **Fatah & Muhtajin (2026)** | Hlm. 343 | Performa model: $R^2 \approx 0,91$ (0,91 di abstrak / 0,916 di isi), MAE 81.250, RMSE 100.500 | Terverifikasi. Terdapat variasi pembulatan minor antara bagian abstrak (0,91) dan teks pembahasan (0,916). |
+| 3 | **Fatah & Muhtajin (2026)** | Hlm. 347–348 | Analisis kerentanan regresi linier terhadap keberadaan *outlier* | Terverifikasi. Menjadi rujukan justifikasi pembersihan outlier berbasis IQR dan standardisasi fitur. |
+| 4 | **Rico-Juan & Taltavull de la Paz (2021)** | p. 6 | Regresi linier klasik *"easy to calculate and interpret but assume in their models only linear relationships"* | Terverifikasi langsung dari artikel jurnal *Expert Systems with Applications* (Elsevier, Scopus Q1), hlm. 6. |
+| 5 | **Rico-Juan & Taltavull de la Paz (2021)** | p. 7 | Model OLS hedonik menjelaskan 80,8% ($R^2 = 0,808$) variasi variabel target | Terverifikasi pada bagian hasil OLS baseline, hlm. 7. |
+| 6 | **Rico-Juan & Taltavull de la Paz (2021)** | p. 13 | Rata-rata $R^2$ mencapai 0,823 pada evaluasi *10-fold cross-validation* di pasar properti | Terverifikasi pada tabel komparasi performa cross-validation, hlm. 13. |
+
+#### Daftar Pustaka (Format APA 7):
+- Fatah, Z., & Muhtajin, M. (2026). Prediksi harga rumah menggunakan algoritma regresi linier. *JAMASTIKA, 5*(1), 343–350.
+- Rico-Juan, J. R., & Taltavull de la Paz, P. (2021). Machine learning with explainability or spatial hedonics tools? An analysis of the asking prices in the housing market in Alicante, Spain. *Expert Systems with Applications, 171*, Article 114590. https://doi.org/10.1016/j.eswa.2021.114590
+
 ---
 
 ## Hasil Evaluasi Model
@@ -120,11 +148,11 @@ Melalui pencarian grid pada hyperparameter:
 
 ---
 
-## Rujukan Ilmiah: Interpretasi Metrik Evaluasi ($R^2$, RMSE, MAE)
+## Rujukan Ilmiah: Landasan Teori Pemodelan & Evaluasi Metrik
 
-Dalam mengevaluasi performa model regresi pada proyek ini, interpretasi metrik didasarkan pada landasan literatur ilmiah berikut:
+Dalam mengevaluasi performa model regresi serta justifikasi pemilihan algoritma pada proyek ini, analisis didasarkan pada landasan literatur ilmiah berikut:
 
-> **Prinsip Utama:**  
+> **Prinsip Utama Evaluasi Metrik:**  
 > Semakin mendekati **1 nilai $R^2$**, serta semakin mendekati **0 nilai RMSE dan MAE**, menunjukkan kinerja model yang semakin baik (*Chicco et al., 2021; Yasin et al., 2025; Zarbakhsh et al., 2024*).
 
 ### 1. Publikasi Internasional (Scopus Q1) - Landasan Teori Evaluasi Metrik
@@ -147,6 +175,19 @@ Yasin, F., Firmansyah, M. R., Aldo, D., & Amrustian, M. A. (2025). Multivariate 
 - **MAE:** Semakin rendah nilai MAE, semakin baik akurasi estimasi model.
 - **RMSE:** Memberikan penalti kuadrat yang lebih besar pada error ekstrem; nilai yang semakin rendah menunjukkan performa model yang semakin solid.
 - **$R^2$:** Mengukur proporsi variabilitas target yang berhasil diterangkan oleh kombinasi fitur prediktor.
+
+### 4. Publikasi Internasional (Scopus Q1) - Pemodelan Hedonik & Baseline Linear Regression
+**Sitasi:**  
+Rico-Juan, J. R., & Taltavull de la Paz, P. (2021). Machine learning with explainability or spatial hedonics tools? An analysis of the asking prices in the housing market in Alicante, Spain. *Expert Systems with Applications, 171*, Article 114590. [https://doi.org/10.1016/j.eswa.2021.114590](https://doi.org/10.1016/j.eswa.2021.114590)
+- **Karakteristik OLS:** Model regresi linier mudah dihitung dan koefisiennya dapat diinterpretasikan secara langsung (*"easy to calculate and interpret but assume in their models only linear relationships"*).
+- **Performa Baseline Empiris:** Terbukti mampu menjelaskan 80,8% ($R^2 = 0,808$) variasi variabel target harga rumah dan memperoleh rata-rata $R^2 = 0,823$ pada pengujian *10-fold cross-validation*.
+
+### 5. Publikasi Nasional (JAMASTIKA) - Prediksi Harga Rumah Menggunakan Regresi Linier
+**Sitasi:**  
+Fatah, Z., & Muhtajin, M. (2026). Prediksi harga rumah menggunakan algoritma regresi linier. *JAMASTIKA, 5*(1), 343–350.
+- **Prediksi Variabel Kontinu:** Regresi linier efektif untuk memprediksi nilai numerik kontinu seperti harga rumah.
+- **Korelasi Linier Kuat:** Mencapai performa $R^2 \approx 0,91$, MAE 81.250, dan RMSE 100.500 dalam estimasi harga properti.
+- **Sensitivitas Outlier:** Menekankan sensitivitas metode terhadap outlier, yang menjustifikasi keharusan filtering outlier (metode IQR) dan standardisasi fitur pada tahap preprocessing.
 
 ---
 
